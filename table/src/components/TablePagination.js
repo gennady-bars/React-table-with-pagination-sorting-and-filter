@@ -2,17 +2,21 @@ import React from 'react'
 
 const TablePagination = props => {
   const pages = [...Array(props.pagesTotal).keys()]
+  let from = Math.max(0, props.currentPage - 3)
+  let to = Math.min(props.pagesTotal, props.currentPage + 4)
+  if (from === 0) to = Math.min(props.pagesTotal, 7);
+  if (to === props.pagesTotal) from = Math.max(0, props.pagesTotal - 7)
 
   if (pages.length === 0) {
     return <h2>Ничего не найдено</h2>
   }
   
     return (
-      <nav aria-label="...">
+      <nav aria-label="..." className='m-auto'>
         <ul className="pagination">
           <li className={"page-item" + (props.currentPage === 0? ' disabled': '')}>
             <a 
-              onClick={(event) => props.onPreviousPageClickHandler(event)}
+              onClick={props.onPreviousPageClickHandler}
               className="page-link" 
               href="/">Назад</a>
           </li>
@@ -28,7 +32,7 @@ const TablePagination = props => {
                   >{page + 1}</a>
                 </li>
               )
-            })
+            }).slice(from, to)
           }
 
           {/* <li className="page-item"><a className="page-link" href="/1">1</a></li>
@@ -39,7 +43,7 @@ const TablePagination = props => {
 
           <li className={"page-item" + (props.currentPage === props.pagesTotal - 1? ' disabled': '')} >
             <a 
-              onClick={(event) => props.onNextPageClickHandler(event)}
+              onClick={props.onNextPageClickHandler}
               className="page-link" 
               href="/">Вперед</a>
           </li>

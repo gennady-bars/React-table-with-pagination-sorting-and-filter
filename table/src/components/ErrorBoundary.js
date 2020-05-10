@@ -1,21 +1,23 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-export default class ErrorBoundary extends Component {
+export default class ErrorBoundry extends Component {
 
   state = {
-    error: false
-  }
+    hasError: false
+  };
 
   componentDidCatch() {
     this.setState({
-      error: true
-    })
+      hasError: true
+    });
   }
-    render() {
-        return (
-            <div>
-                
-            </div>
-        )
+
+  render() {
+
+    if (this.state.hasError) {
+      return <h1>Что-то пошло не так...</h1>
     }
+
+    return this.props.children;
+  }
 }
