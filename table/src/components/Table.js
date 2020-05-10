@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import TableRow from './TableRow'
 import TableSort from './TableSort';
 import TableHeader from './TableHeader';
+import TablePagination from './TablePagination';
+import { makeData } from '../makeRandomData';
 
 function filterTable(tableContents, column, condition, input) {
   const filteredTable = tableContents.filter(row => {
@@ -46,75 +48,35 @@ export default class Table extends Component {
 
   state = {
     isFiltered: false,
+    pages: {
+      devidedIntoPages: [],
+      currentPage: 0,
+      step: 10
+    },
     filterValues: {
       column: '',
       condition: '',
       input: '',
     },
     tableHeader: ['date', 'name', 'quantity', 'distance'],
-    tableContents: [
-      {
-        id: 1,
-        date: '2020-05-09',
-        name: 'John',
-        quantity: 11,
-        distance: 5
-      },
-      {
-        id: 2,
-        date: '2020-05-08',
-        name: 'Sam',
-        quantity: 9,
-        distance: 4
-      },
-      {
-        id: 3,
-        date: '2020-05-07',
-        name: 'Mike',
-        quantity: 13,
-        distance: 8
-      },
-      {
-        id: 4,
-        date: '2020-05-06',
-        name: 'Sarah',
-        quantity: 15,
-        distance: 9
-      },
-      {
-        id: 5,
-        date: '2020-05-01',
-        name: 'George',
-        quantity: 19,
-        distance: 10
-      },
-      {
-        id: 6,
-        date: '2020-05-03',
-        name: 'Bill',
-        quantity: 1,
-        distance: 1
-      },
-      {
-        id: 7,
-        date: '2020-05-02',
-        name: 'Bob',
-        quantity: 3,
-        distance: 2
-      },
-      {
-        id: 8,
-        date: '2020-05-10',
-        name: 'Fiona',
-        quantity: 13,
-        distance: 9
-      },
-    ]
+    tableContents: []
   }
 
   async componentDidMount() {
     // асинхронно делаем запрос в базу данных
     // и устанавливаем наш state
+    const tableContents = makeData(103)
+    const devidedIntoPages = []
+    for (let i=0; i <= tableContents.length; i += this.state.pages.step) {
+      devidedIntoPages.push(tableContents.slice(i, i + this.state.pages.step))
+    }
+
+    this.setState({
+      tableContents,
+      pages: {
+        ...this.state.pages, devidedIntoPages
+      }
+    })
   }
 
   sortTable = (column) => {
@@ -155,18 +117,54 @@ export default class Table extends Component {
       isFiltered: true,
       filterValues: {
         ...this.state.filterValues, input
-      }
+      },
+      pages: {
+        ...this.state.pages, currentPage: 0
+      },
     })
     
   }
 
   tableFilterHandler = () => {
+    
     this.setState({
       isFiltered: true
     })
   }
+
+  onPageClickHandler = (event, currentPage) => {
+    event.preventDefault()
+    this.setState({
+      pages: {
+        ...this.state.pages, currentPage
+      }
+    })
+  }
+  
+  onPreviousPageClickHandler = (event) => {
+    event.preventDefault()
+    this.setState({
+      pages: {
+        ...this.state.pages, currentPage: this.state.pages.currentPage - 1
+      }
+    })
+  }
+
+  onNextPageClickHandler = (event) => {
+    event.preventDefault()
+    this.setState({
+      pages: {
+        ...this.state.pages, currentPage: this.state.pages.currentPage + 1
+      }
+    })
+  }
+
+
     render() {
+      // console.log(this.state);
+      
       const {column, condition, input} = this.state.filterValues
+      const {currentPage, step} = this.state.pages
       let tableContents = this.state.tableContents
       if (this.state.isFiltered) {
         tableContents = filterTable(tableContents, column, condition, input)
@@ -181,7 +179,6 @@ export default class Table extends Component {
                 tableFilter={this.tableFilterHandler}
               />
               
-
               <table className='table table-striped'>
                 <tbody>
                   <TableHeader
@@ -189,12 +186,21 @@ export default class Table extends Component {
                     sortTable={this.sortTable}
                   />
                     {
-                      tableContents.map((rowProps) => {
+                      tableContents.slice(currentPage * step, currentPage * step + step).map((rowProps) => {
                         return <TableRow key={rowProps.id} {...rowProps}/>
                       })
                     }
                 </tbody>
               </table>
+
+              <TablePagination
+                currentPage={currentPage}
+                pagesTotal={Math.ceil(tableContents.length / step)}
+                onPageClickHandler={this.onPageClickHandler}
+                onPreviousPageClickHandler={this.onPreviousPageClickHandler}
+                onNextPageClickHandler={this.onNextPageClickHandler}
+              />
+
             </React.Fragment>
         )
     }
