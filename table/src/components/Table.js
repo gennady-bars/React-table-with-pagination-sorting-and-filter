@@ -177,6 +177,7 @@ export default class Table extends Component {
                 onConditionChange={this.onConditionChange}
                 onInputChange={this.onInputChange}
                 tableFilter={this.tableFilterHandler}
+                inputDisabled={!(column && condition)}
               />
               
               <table className='table table-striped'>

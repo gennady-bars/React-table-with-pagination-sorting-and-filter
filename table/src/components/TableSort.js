@@ -3,7 +3,7 @@ import React from 'react'
 const TableSort = (props) => {
     return (
       <React.Fragment>
-        <div className="input-group mb-3">
+        <div className="input-group mb-3 mt-3">
           <select onChange={(e) => props.onColumnChange(e.target.value)}  className="custom-select">
             <option value=''>Выберите колонку...</option>
             <option value="name">Name</option>
@@ -17,22 +17,18 @@ const TableSort = (props) => {
             <option value="more">больше</option>
             <option value="less">меньше</option>
           </select>
-          
         </div>
-
         <div className="input-group mb-3">
-          <button 
-            type="button" 
-            className="btn btn-primary mr-3"
-            onClick={props.tableFilter}
-          >Отфильтровать таблицу</button>
+       
           <input 
             onChange={(e) => props.onInputChange(e.target.value)}
             type="text" 
             className="form-control" 
-            placeholder='значение для фильтра...'
+            placeholder={props.inputDisabled? 'Для фильтра выберите колонку и условие' : 'Введите значение для фильтра...'}
+            disabled={props.inputDisabled}
           ></input>
         </div>
+        <p>Выберите все поля для фильтрации и укажите значение</p>
         
       </React.Fragment>
     )

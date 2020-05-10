@@ -7,6 +7,7 @@ const TableHeader = props => {
         props.tableHeader.map(column => {
         return (
           <th 
+            style={{'cursor': 'pointer'}}
             scope="col" 
             key={column}
             onClick={() => props.sortTable(column)}
