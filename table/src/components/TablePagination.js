@@ -12,7 +12,7 @@ const TablePagination = props => {
   }
   
     return (
-      <nav aria-label="..." className='m-auto'>
+      <nav aria-label="...">
         <ul className="pagination">
           <li className={"page-item" + (props.currentPage === 0? ' disabled': '')}>
             <a 
