@@ -90,7 +90,10 @@ export default class Table extends Component {
       return a[column] - b[column];
     })
     this.setState({
-      tableContents: contents
+      tableContents: contents,
+      pages: {
+        ...this.state.pages, currentPage: 0
+      },
     })
   }
 
@@ -178,6 +181,14 @@ export default class Table extends Component {
                 onInputChange={this.onInputChange}
                 tableFilter={this.tableFilterHandler}
                 inputDisabled={!(column && condition)}
+              />
+
+              <TablePagination
+                currentPage={currentPage}
+                pagesTotal={Math.ceil(tableContents.length / step)}
+                onPageClickHandler={this.onPageClickHandler}
+                onPreviousPageClickHandler={this.onPreviousPageClickHandler}
+                onNextPageClickHandler={this.onNextPageClickHandler}
               />
               
               <table className='table table-striped'>
