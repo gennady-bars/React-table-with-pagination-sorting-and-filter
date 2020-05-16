@@ -1,4 +1,4 @@
-# a table with pagination, column sorting and filtering
+# a React table with pagination, column sorting and filtering
 код таблицы с пагинацией, сортиировкой по столбцам и фильтром
 
 * ### Можно сортировать по колонкам при клике на них мышкой. 
