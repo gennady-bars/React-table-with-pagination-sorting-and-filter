@@ -64,18 +64,12 @@ export default class Table extends Component {
 
   async componentDidMount() {
     // асинхронно делаем запрос в базу данных
+    // Если используем Redux, то это делаем через Thunk
     // и устанавливаем наш state
     const tableContents = makeData(103)
-    const devidedIntoPages = []
-    for (let i=0; i <= tableContents.length; i += this.state.pages.step) {
-      devidedIntoPages.push(tableContents.slice(i, i + this.state.pages.step))
-    }
 
     this.setState({
       tableContents,
-      pages: {
-        ...this.state.pages, devidedIntoPages
-      }
     })
   }
 
