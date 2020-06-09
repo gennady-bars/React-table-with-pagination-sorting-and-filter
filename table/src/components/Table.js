@@ -58,6 +58,7 @@ export default class Table extends Component {
     },
     tableHeader: ["date", "name", "quantity", "distance"],
     tableContents: [],
+    error: null,
   };
 
   async componentDidMount() {
@@ -70,7 +71,9 @@ export default class Table extends Component {
       this.setState({
         tableContents,
       });
-    } catch (error) {}
+    } catch (error) {
+      this.setState({ error });
+    }
   }
 
   sortTable = (column) => {
@@ -163,7 +166,10 @@ export default class Table extends Component {
   };
 
   render() {
-    // console.log(this.state);
+
+    if (error) {
+      return <h1>Произошла ошибка загрузки с сервера. Попробуйте еще раз</h1>
+    }
 
     const { column, condition, input } = this.state.filterValues;
     const { currentPage, step } = this.state.pages;
