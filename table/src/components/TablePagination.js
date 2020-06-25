@@ -7,8 +7,10 @@ const TablePagination = props => {
   if (from === 0) to = Math.min(props.pagesTotal, 7);
   if (to === props.pagesTotal) from = Math.max(0, props.pagesTotal - 7)
 
-  if (pages.length === 0) {
+  if (pages.length === 0 && props.bottom) {
     return <h2>Ничего не найдено</h2>
+  } else if (pages.length === 0 && !props.bottom) {
+    return null
   }
   
     return (
@@ -34,12 +36,6 @@ const TablePagination = props => {
               )
             }).slice(from, to)
           }
-
-          {/* <li className="page-item"><a className="page-link" href="/1">1</a></li>
-          <li className="page-item active" aria-current="page">
-            <a className="page-link" href="/2">2 <span className="sr-only">(current)</span></a>
-          </li>
-          <li className="page-item"><a className="page-link" href="/3">3</a></li> */}
 
           <li className={"page-item" + (props.currentPage === props.pagesTotal - 1? ' disabled': '')} >
             <a 

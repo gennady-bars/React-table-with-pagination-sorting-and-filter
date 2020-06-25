@@ -167,7 +167,7 @@ export default class Table extends Component {
 
   render() {
 
-    if (error) {
+    if (this.state.error) {
       return <h1>Произошла ошибка загрузки с сервера. Попробуйте еще раз</h1>
     }
 
@@ -215,6 +215,7 @@ export default class Table extends Component {
           onPageClickHandler={this.onPageClickHandler}
           onPreviousPageClickHandler={this.onPreviousPageClickHandler}
           onNextPageClickHandler={this.onNextPageClickHandler}
+          bottom={true}
         />
       </React.Fragment>
     );
